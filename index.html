@@ -476,6 +476,100 @@
       const STORAGE_KEY = "minha-estante-graduacao-v1";
       const SECTIONS_KEY = "minha-estante-sections-v1";
       const PDF_DATABASE = "minha-estante-pdfs-v1";
+            const RECOVERY_SEED_KEY = "dev-library-recovery-seed-v1";
+      const RECOVERED_LIBRARY = {
+        "sections": [
+          {
+            "id": "046c2b72-1224-46d4-82c2-6bfcac598fb0",
+            "name": "Maratona de programação"
+          },
+          {
+            "id": "ccc0a623-67b5-492d-a6f4-36a1caeeacee",
+            "name": "Machine Learning"
+          },
+          {
+            "id": "09481684-be28-4879-ac05-4e3c913bf200",
+            "name": "English"
+          }
+        ],
+        "books": [
+          {
+            "id": "3b472333-3c9b-476e-ae91-3f669a63c17c",
+            "title": "American English file 1 student book third edition 5",
+            "author": "Oxford University",
+            "subject": "English",
+            "semester": "",
+            "status": "Quero ler",
+            "link": "",
+            "notes": "",
+            "sections": ["09481684-be28-4879-ac05-4e3c913bf200"]
+          },
+          {
+            "id": "3b4458c1-bca4-4ada-947e-567adb4234bd",
+            "title": "Bishop Pattern Recognition and Machine Learning 2006",
+            "author": "M. Jordan",
+            "subject": "Machine Learning",
+            "semester": "1º semestre",
+            "status": "Quero ler",
+            "link": "https://www.microsoft.com/en-us/research/wp-content/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf",
+            "notes": "",
+            "sections": ["ccc0a623-67b5-492d-a6f4-36a1caeeacee"]
+          },
+          {
+            "id": "b995eede-260d-43b2-a81e-b69183395a5c",
+            "title": "An Introduction to Statistical Learning",
+            "author": "Springer Texts in Statistics",
+            "subject": "Machine Learning",
+            "semester": "1º semestre",
+            "status": "Quero ler",
+            "link": "https://www.stat.berkeley.edu/~rabbee/s154/ISLR_First_Printing.pdf",
+            "notes": "",
+            "sections": ["ccc0a623-67b5-492d-a6f4-36a1caeeacee"]
+          },
+          {
+            "id": "02564270-d5be-4d08-926a-3c4a6739fa13",
+            "title": "Introduction to Algorithms: A Creative Approach",
+            "author": "Udi Manber",
+            "subject": "Algoritimos",
+            "semester": "Maratona",
+            "status": "Quero ler",
+            "link": "https://blogtailieublog.wordpress.com/wp-content/uploads/2017/05/introduction-to-algorithms-by-udi-manber.pdf",
+            "notes": "",
+            "sections": ["046c2b72-1224-46d4-82c2-6bfcac598fb0"]
+          },
+          {
+            "id": "52207c34-6084-44d5-a656-c18ac6dcbedf",
+            "title": "The Algorithm Design Manual",
+            "author": "Steven S. Skiena",
+            "subject": "Algoritimos",
+            "semester": "Maratona",
+            "status": "Quero ler",
+            "link": "https://sureshcseit.wordpress.com/wp-content/uploads/2021/04/skienathealgorithmdesignmanual.pdf",
+            "notes": "",
+            "sections": ["046c2b72-1224-46d4-82c2-6bfcac598fb0"]
+          }
+        ]
+      };
+
+      function applyRecoveredSeed() {
+        try {
+          if (localStorage.getItem(RECOVERY_SEED_KEY)) return;
+          const savedBooks = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          const savedSections = JSON.parse(localStorage.getItem(SECTIONS_KEY) || "[]");
+          if (Array.isArray(savedBooks) && savedBooks.length === 0 &&
+              Array.isArray(savedSections) && savedSections.length === 0) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(RECOVERED_LIBRARY.books));
+            localStorage.setItem(SECTIONS_KEY, JSON.stringify(RECOVERED_LIBRARY.sections));
+          }
+          localStorage.setItem(RECOVERY_SEED_KEY, "1");
+        } catch (error) {
+          console.error("Não foi possível restaurar os dados recuperados.", error);
+        }
+      }
+
+      applyRecoveredSeed();
+
+
       const allowedStatuses = ["Quero ler", "Lendo", "Concluído"];
       const dialog = document.getElementById("book-dialog");
       const form = document.getElementById("book-form");
